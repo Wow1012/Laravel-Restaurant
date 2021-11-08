@@ -650,7 +650,7 @@ $("body").on("click", ".addToCartFinalMM" , function() {
 
 
 <script type="text/javascript"> 
-
+	//alert("{{ $holder_id }}");
 
 	<?php if(!empty($_GET["t"]) and $_GET["t"] > 0) {  $tableID = $_GET["t"];?>
 		$("#TableNo").text(" Table (" + <?php echo $tableID; ?> + ")");
@@ -668,6 +668,11 @@ $("body").on("click", ".addToCartFinalMM" , function() {
 		}
 		$("#myTableModal").modal("hide");
 		$("#holdOrderID").val(<?php echo $holdOrder->id; ?>);
+		
+		
+		//alert($("#holdOrderID").val() + "StartPoint");
+
+
 		$("#TableNo").text(" Table (" + <?php echo $holdOrder->table_id; ?> + ")");
 		$("#TableNoCart").text(" Table (" + <?php echo $holdOrder->table_id; ?> + ")");
 		$("#table_id").val(<?php echo $holdOrder->table_id; ?>);
@@ -686,7 +691,7 @@ $("body").on("click", ".addToCartFinalMM" , function() {
 			}
 		});
 
-	}, 500);
+	}, 1000);
 <?php } else {  ?>
 	// $(function() {
 	// 	$("#myTableModal").modal("show");
@@ -798,12 +803,16 @@ $( "body" ).on( "click", "#holdOrders", function () {
 		});
 		$( "body" ).on( "click", ".ViewHoldOrder", function () {
 			var form_data = {
-				id:$(this).attr("data-id")
+				id:$(this).attr("data-id"),
 			}
 
 			$("#myTableModal").modal("hide");
 			$("#hold_id").val($(this).attr("data-id"));
 			$("#holdOrderID").val($(this).attr("data-id"));
+
+			//alert($("#holdOrderID").val() + "ViewHoldOrder");
+
+
 			$("#TableNo").text(" (" + $(this).attr("data-table") + ")");
 			$("#TableNoCart").text(" (" + $(this).attr("data-table") + ")");
 			$("#table_id").val($(this).attr("data-table_id"));
@@ -878,13 +887,16 @@ $( "body" ).on( "click", "#holdOrders", function () {
 
 		$( "body" ).on( "click", "#holdOrder", function () {
 			var form_data = {
-				id:$("#holdOrderID").val(),
+				id: '{{$holder_id}}',
 				table_id: '{{ $table_room['table_number'] }}',
 				room_id:  '{{ $table_room['room_number'] }}',
 				comment:$("#comments").val(),
 				discount:$("#discount_p").val(),
 				cart: cart,
 			};
+			
+
+			//alert(form_data.id);
 
 			
 			$.ajax( {

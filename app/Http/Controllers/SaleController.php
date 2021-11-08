@@ -49,6 +49,8 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    
     public function create()
     {
         if(!empty($_GET["h"]) and $_GET["h"] > 0) {
@@ -63,27 +65,26 @@ class SaleController extends Controller
         $data['rooms'] = DB::table("rooms")->get();
         $tables = DB::table("tables")->get();
         foreach($tables as $table) { 
-            $table->hold = DB::table("hold_order")->where("table_id" , $table->id)->exists();
-            $table->hold_id = DB::table("hold_order")->where("table_id" , $table->id)->value("id");
+            $table->hold = DB::table("hold_order")->where("table_id" , $table->id)->exists();       //table exists in hold_order?
+            $table->hold_id = DB::table("hold_order")->where("table_id" , $table->id)->value("id"); //hold_order id of table.
         }
         $data['tables'] = $tables;
-        //$cart = collect(session('cart'))->sortByDesc('id');
         
         $cartall = collect(session('cart'));
         $cart = array();
-        $table_id = session()->get('table')['table_number'];
+        $table_id = session()->get('table')['table_number'];                //Current Table Number that was stored in Session. 
         foreach ($cartall as $key => $value) {
             # code...
-            $value = str_replace("'", "", $value);
+            $value = str_replace("'", "", $value);                          //Eliminate ' of cart because of error.
             if($table_id == $value['table_id']) {
                 array_push($cart, $value);
             }
         }
-        //var_dump(session()->get('table'));
-        //return ;
-        $table_room = session('table');
-        return view('backend.sales.create', $data, compact('cart', 'table_room', 'table_id'));
-        //session()->forget('cart');
+        
+   
+        $table_room = session('table');  
+        $holder_id = session('holder_id');                                     //Room Number of Current Table
+        return view('backend.sales.create', $data, compact('cart', 'table_room', 'table_id', 'holder_id'));
     }
 
     public function product_table(Request $request)
@@ -266,20 +267,61 @@ class SaleController extends Controller
         $room_id = $request->input("room_id");
         $discount = $request->input("discount");
         $cart = json_encode($request->input("cart"));
-        $table = DB::table("hold_order")->where("table_id", $table_id)->where("status" , 0)->count();
-        if ($table < 0) {
+        $istableexist = DB::table("hold_order")->where("table_id", $table_id)->count();
+        
+        //When Red Table is in Hold Order and Status is not 0 goes to 
+        
+        if($istableexist > 0) {
+            //$isorderbletableexist = DB::table("hold_order")->where("table_id", $table_id)->where("status" , 0)->count();
+
+            //if($isorderbletableexist > 0) {
+                DB::table("hold_order")->where("id", $id)->update(array("table_id" => $table_id, "discount" => $discount, "room_id" => $room_id, "cart" => $cart, "comment" => $comment, "status" => 1, "user_id" => Auth::user()->id));
+                echo json_encode(["status" => true, "url" => url("sales/kreceipt/".$id)]);
+                exit;
+            /*}
+            else {
+                echo json_encode(["status" => false, "message" => "Table already on Hold"]);
+                exit;
+            }*/
+        }
+        else {
+
+            if($request->input("cart")) {
+                $id = DB::table("hold_order")->insertGetId(array("room_id" => $room_id, "discount" => $discount,"table_id" => $table_id, "cart" => $cart, "status" => 1, "comment" => $comment, "user_id" => Auth::user()->id));
+                echo json_encode(["status" => true, "url" => url("sales/kreceipt/".$id)]);
+                exit;
+            }
+            else {
+                echo json_encode(["status" => false, "message" => "Table is Empty."]);
+                exit;
+            }
+        }
+            //Green button process:Insert New Green Hold table to Hold order and Give new ID to Green Table
+
+            // $id = DB::table("hold_order")->insertGetId(array("room_id" => $room_id, "discount" => $discount,"table_id" => $table_id, "cart" => $cart, "comment" => $comment, "user_id" => Auth::user()->id));
+            // echo json_encode(["status" => true, "url" => url("sales/kreceipt/".$id)]);
+            // exit;
+
+
+        /*if ($table < 0) {
+            var_dump($table);
+            return ;
             DB::table("hold_order")->where("id", $id)->update(array("table_id" => $table_id, "discount" => $discount, "room_id" => $room_id, "cart" => $cart, "comment" => $comment, "user_id" => Auth::user()->id));
             echo json_encode(["status" => true, "url" => url("sales/kreceipt/".$id)]);
             exit;
         }
+
+        //When Red Table is in Hold Order and Status is 0 return Alert.
         $table = DB::table("hold_order")->where("table_id", $table_id)->where("room_id" , $room_id)->where("status" , 0)->count();
         if ($table > 0) {
             echo json_encode(["status" => false, "message" => "Table already on Hold"]);
             exit;
         }
+        //Green button process:Insert New Green Hold table to Hold order and Give new ID to Green Table
         $id = DB::table("hold_order")->insertGetId(array("room_id" => $room_id, "discount" => $discount,"table_id" => $table_id, "cart" => $cart, "comment" => $comment, "user_id" => Auth::user()->id));
         echo json_encode(["status" => true, "url" => url("sales/kreceipt/".$id)]);
-        exit;
+        exit;*/
+        
         // return url("sales/kreceipt/".$id);
     }
 
@@ -288,6 +330,8 @@ class SaleController extends Controller
         $id = $request->input("id");
         $order = DB::table("hold_order")->where("id", $id)->first();
         
+        session()->put('holder_id', $id);
+
         echo $order->cart;
     }
 
