@@ -1,0 +1,86 @@
+/* CSS Document */
+@font-face {
+    font-family: 'HelveticaNeue';
+    src: url("fonts/HelveticaNeue.eot");
+    src: url("fonts/HelveticaNeue.eot") format("embedded-opentype"), url("fonts/HelveticaNeue.woff2") format("woff2"), url("fonts/HelveticaNeue.woff") format("woff"), url("fonts/HelveticaNeue.ttf") format("truetype"), url("fonts/HelveticaNeue.svg#HelveticaNeue") format("svg");
+}
+@font-face {
+    font-family: 'HelveticaNeueLTStd-Lt';
+    src: url("fonts/333FA9_0_0.eot");
+    src: url("fonts/333FA9_0_0.eot?#iefix") format("embedded-opentype"), url("fonts/333FA9_0_0.woff2") format("woff2"), url("fonts/333FA9_0_0.woff") format("woff"), url("fonts/333FA9_0_0.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'HelveticaNeueLTStd-Bd';
+    src: url("fonts/333FA9_1_0.eot");
+    src: url("fonts/333FA9_1_0.eot?#iefix") format("embedded-opentype"), url("fonts/333FA9_1_0.woff2") format("woff2"), url("fonts/333FA9_1_0.woff") format("woff"), url("fonts/333FA9_1_0.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'HelveticaNeueLTStd-Roman';
+    src: url("fonts/333FA9_2_0.eot");
+    src: url("fonts/333FA9_2_0.eot?#iefix") format("embedded-opentype"), url("fonts/333FA9_2_0.woff2") format("woff2"), url("fonts/333FA9_2_0.woff") format("woff"), url("fonts/333FA9_2_0.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'HelveticaNeueLTStd-Th';
+    src: url("fonts/333FA9_3_0.eot");
+    src: url("fonts/333FA9_3_0.eot?#iefix") format("embedded-opentype"), url("fonts/333FA9_3_0.woff2") format("woff2"), url("fonts/333FA9_3_0.woff") format("woff"), url("fonts/333FA9_3_0.ttf") format("truetype");
+}
+@font-face {
+    font-family: 'HelveticaNeueLTStd-Md';
+    src: url("fonts/333FA9_4_0.eot");
+    src: url("fonts/333FA9_4_0.eot?#iefix") format("embedded-opentype"), url("fonts/333FA9_4_0.woff2") format("woff2"), url("fonts/333FA9_4_0.woff") format("woff"), url("fonts/333FA9_4_0.ttf") format("truetype");
+}
+body {
+    background-color: #ececec;
+    padding: 0px;
+    margin: 0px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+.text-center {
+    text-align: center;
+}
+.email-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #FFF;
+}
+.email-wrap .header {
+    padding: 28px;
+}
+.email-wrap .header .logo {
+    max-width: 130px;
+}
+.email-wrap .sub-header {
+    background-color: #ec7357;
+    padding: 35px 28px;
+    text-align: center;
+}
+.email-wrap .sub-header h3, .email-wrap .sub-header h4 {
+    color: #FFF;
+    margin: 0px;
+    font-family: 'HelveticaNeueLTStd-Md';
+    font-size: 24px;
+}
+.email-wrap .sub-header h4 {
+    font-size: 18px;
+}
+.email-wrap .content {
+    padding: 28px;
+}
+.email-wrap .content h3 {
+    font-family: 'HelveticaNeueLTStd-Roman';
+    font-size: 24px;
+}
+.email-wrap .content p {
+    font-family: 'HelveticaNeueLTStd-Roman';
+    font-size: 18px;
+    color: #000;
+    line-height: 1.5;
+}
+
+
+
+
+
+
